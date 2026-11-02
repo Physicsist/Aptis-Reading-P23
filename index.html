@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reading P23 - Aptis B1 Intensive</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --subtext: #475569;
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding-bottom: 40px;
+        }
+        /* Header & Nav */
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 10px 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 768px;
+            margin: 0 auto;
+        }
+        .app-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .stat-pill {
+            padding: 3px 8px;
+            border-radius: 99px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+        }
+        .nav-tabs {
+            display: flex;
+            max-width: 768px;
+            margin: 10px auto 0;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+        .tab-btn {
+            flex: 1;
+            white-space: nowrap;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--subtext);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 768px;
+            margin: 16px auto;
+            padding: 0 12px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card);
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        select, .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+        }
+        .btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-success { background: var(--success); color: white; border-color: var(--success); }
+        .btn-danger { background: var(--danger); color: white; border-color: var(--danger); }
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+
+        /* Card Styles */
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        .topic-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .priority-badge {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .p-5 { background: #fee2e2; color: #b91c1c; }
+        .p-4 { background: #ffedd5; color: #c2410c; }
+        .p-3 { background: #fef3c7; color: #b45309; }
+        .p-2 { background: #e0f2fe; color: #0369a1; }
+        .p-1 { background: #f1f5f9; color: #475569; }
+
+        /* Timer & Progress */
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: var(--warning-light);
+            color: var(--warning);
+            font-variant-numeric: tabular-nums;
+        }
+        .timer.urgent { background: var(--danger-light); color: var(--danger); animation: pulse 1s infinite; }
+        @keyframes pulse { 50% { opacity: 0.6; } }
+
+        /* Quiz Options */
+        .question-prompt {
+            font-size: 0.95rem;
+            color: var(--subtext);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .option-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            text-align: left;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            background: var(--card);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.12s;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #f8fafc; }
+        .option-btn:disabled { cursor: default; }
+        .option-btn.correct { border-color: var(--success); background: var(--success-light); color: #065f46; font-weight: 600; }
+        .option-btn.wrong { border-color: var(--danger); background: var(--danger-light); color: #991b1b; }
+        .opt-letter {
+            font-weight: 800;
+            color: var(--primary);
+            min-width: 22px;
+        }
+
+        /* Ordering Mode */
+        .order-slots {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .order-slot {
+            min-height: 48px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8fafc;
+            font-size: 0.92rem;
+            cursor: pointer;
+        }
+        .order-slot.filled {
+            border-style: solid;
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        .order-slot.correct { border-color: var(--success); background: var(--success-light); }
+        .order-slot.wrong { border-color: var(--danger); background: var(--danger-light); }
+        .slot-num {
+            font-weight: 800;
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        .pool-item {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--card);
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        .pool-item:active { transform: scale(0.99); }
+
+        /* Explanation & Memory Chain Box */
+        .feedback-box {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.2s ease-in;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .chain-en { font-weight: 700; color: var(--primary); font-size: 0.95rem; margin-bottom: 4px; }
+        .chain-vi { font-style: italic; color: var(--subtext); font-size: 0.9rem; margin-bottom: 12px; }
+        .full-sentences {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 10px;
+        }
+        .sent-item {
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 4px 0;
+        }
+        .tts-btn {
+            background: none;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 2px 7px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            background: white;
+        }
+        .tts-btn:active { background: var(--primary-light); }
+
+        .kw {
+            background: #fef08a;
+            padding: 0 3px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        .hidden { display: none !important; }
+        .search-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+        .srs-status {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+        <div class="app-title">
+            <span>⚡ Reading P23</span>
+        </div>
+        <div class="stats-bar">
+            <span class="stat-pill" id="stat-mastered" title="Số chủ đề đã thuộc">✅ 0/62</span>
+            <span class="stat-pill" id="stat-weak" style="color: var(--danger);" title="Chủ đề hay sai cần ôn">⚠️ 0</span>
+        </div>
+    </div>
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('quiz-chain')">⚡ Quiz Chuỗi Nhớ</button>
+        <button class="tab-btn" onclick="switchTab('quiz-order')">🧩 Ghép Thứ Tự Câu</button>
+        <button class="tab-btn" onclick="switchTab('study')">📖 Bảng Học (62 Topics)</button>
+    </div>
+</header>
+
+<div class="container">
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+            <label for="priority-filter" style="font-size: 0.85rem; font-weight: 600;">Ưu tiên:</label>
+            <select id="priority-filter" onchange="onFilterChange()">
+                <option value="all">Tất cả (62 Topics)</option>
+                <option value="high">🔥 Ưu tiên cao (Topics 1 - 24)</option>
+                <option value="5">🔥🔥🔥🔥🔥 Cao nhất (Topics 1 - 10)</option>
+                <option value="4">🔥🔥🔥🔥 Rất quan trọng (Topics 11 - 17)</option>
+                <option value="3">🔥🔥🔥 Quan trọng (Topics 18 - 22)</option>
+                <option value="weak">⚠️ Câu đang làm sai / Chưa thuộc</option>
+            </select>
+        </div>
+        <div style="display: flex; gap: 6px; align-items: center;">
+            <button class="btn btn-sm" onclick="toggleAutoSpeak()" id="btn-autospeak">🔊 Tự đọc: BẬT</button>
+            <button class="btn btn-sm" onclick="resetProgress()" title="Xóa lịch sử học">🔄</button>
+        </div>
+    </div>
+
+    <!-- MODE 1: QUIZ CHUỖI NHỚ (FAST MCQ) -->
+    <div id="view-quiz-chain">
+        <div class="card">
+            <div class="quiz-meta">
+                <span id="qc-progress">Chủ đề #1</span>
+                <span class="timer" id="qc-timer">⏱ 25s</span>
+            </div>
+            <div class="topic-header">
+                <div class="topic-title" id="qc-title">Topic 1: Films</div>
+                <span class="priority-badge p-5" id="qc-badge">🔥🔥🔥🔥🔥</span>
+            </div>
+
+            <div class="question-prompt" id="qc-prompt">Chọn chuỗi từ khóa đúng thứ tự của bài đọc trên:</div>
+            <div class="option-list" id="qc-options"></div>
+
+            <!-- Instant Feedback -->
+            <div id="qc-feedback" class="feedback-box hidden">
+                <div id="qc-result-banner" style="font-weight: 800; margin-bottom: 8px; font-size: 1rem;"></div>
+                <div class="chain-en" id="qc-fb-chain"></div>
+                <div class="chain-vi" id="qc-fb-vi"></div>
+                <div class="full-sentences" id="qc-fb-sents"></div>
+                <div style="margin-top: 14px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary" style="flex: 1;" onclick="nextChainQuestion()">Câu tiếp theo ➔</button>
+                    <button class="btn" onclick="speakCurrentTopic()">🔊 Đọc cả bài</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODE 2: QUIZ SẮP XẾP CÂU (APTIS PART 2 EXAM FORMAT) -->
+    <div id="view-quiz-order" class="hidden">
+        <div class="card">
+            <div class="quiz-meta">
+                <span id="qo-progress">Sắp xếp câu</span>
+                <span class="timer" id="qo-timer">⏱ 45s</span>
+            </div>
+            <div class="topic-header">
+                <div>
+                    <div class="topic-title" id="qo-title">Topic 1</div>
+                    <div style="font-size: 0.82rem; color: var(--subtext); margin-top: 2px;">Chạm vào các câu bên dưới theo đúng thứ tự từ 1 đến 5</div>
+                </div>
+                <span class="priority-badge" id="qo-badge"></span>
+            </div>
+
+            <div style="margin-bottom: 10px; display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-sm" onclick="toggleOrderHint()">💡 Gợi ý Chuỗi nhớ</button>
+                <button class="btn btn-sm" onclick="resetCurrentOrder()">↩️ Xếp lại</button>
+            </div>
+            <div id="qo-hint-box" class="feedback-box hidden" style="margin-bottom: 12px; margin-top: 0;">
+                <div class="chain-en" id="qo-hint-en"></div>
+                <div class="chain-vi" id="qo-hint-vi" style="margin-bottom:0;"></div>
+            </div>
+
+            <div class="order-slots" id="qo-slots"></div>
+            <div class="question-prompt">Các câu xáo trộn (Chạm để đưa lên ô trống):</div>
+            <div id="qo-pool"></div>
+
+            <div id="qo-feedback" class="feedback-box hidden">
+                <div id="qo-result-banner" style="font-weight: 800; margin-bottom: 8px;"></div>
+                <div class="chain-en" id="qo-fb-chain"></div>
+                <div class="chain-vi" id="qo-fb-vi"></div>
+                <div class="full-sentences" id="qo-fb-sents"></div>
+                <div style="margin-top: 14px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary" style="flex: 1;" onclick="nextOrderQuestion()">Bài tiếp theo ➔</button>
+                    <button class="btn" onclick="speakCurrentTopic()">🔊 Đọc cả bài</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODE 3: BẢNG HỌC NHANH 62 TOPICS -->
+    <div id="view-study" class="hidden">
+        <input type="text" id="study-search" class="search-input" placeholder="🔍 Tìm kiếm tên Topic, từ khóa tiếng Anh hoặc tiếng Việt..." oninput="renderStudyList()">
+        <div id="study-list"></div>
+    </div>
+</div>
+
+<script>
+// ============================================================================
+// DỮ LIỆU 62 TOPICS ĐƯỢC HARDCODE CHÍNH XÁC TỪ TÀI LIỆU PDF
+// ============================================================================
+const TOPICS_DATA = [
+  {
+    id: 1, p: 5,
+    title: "Topic 1: Films – Phim ảnh",
+    sents: [
+      "Old movies were very different from today's movies.",
+      "That's because the movies were only in black and white, and sometimes without sound.",
+      "Not only did these technological limitations exist, the movies were also low budget.",
+      "Due to the lack of money, actors also had few opportunities to earn money through acting.",
+      "Now things have changed, actors and filmmakers can earn thousands of dollars from film production."
+    ],
+    chain: "Different → Black & White → Low Budget → Actors Earned Little → Things Changed",
+    vi: "Khác biệt → Đen trắng → Kinh phí thấp → Diễn viên kiếm ít tiền → Mọi thứ thay đổi"
+  },
+  {
+    id: 2, p: 5,
+    title: "Topic 2: New Coffee Shop (Version 2) – Quán cà phê mới (Phiên bản 2)",
+    sents: [
+      "When I arrived, the place was very crowded, and the staff were extremely busy on the first day.",
+      "Even though it was crowded, the staff still managed to find a table for me.",
+      "They handed me the menu, and when I looked through it, I saw quite a variety of dishes.",
+      "After checking them all, I decided to order the most expensive sandwich.",
+      "It tasted really good with melted cheese on top, and I’ll definitely come back to this place again."
+    ],
+    chain: "Arrive → Get Table → Menu → Order Sandwich → Delicious",
+    vi: "Đến quán → Có bàn → Xem thực đơn → Gọi sandwich → Ngon"
+  },
+  {
+    id: 3, p: 5,
+    title: "Topic 3: The Famous Singer (Version 4) – Ca sĩ nổi tiếng (Phiên bản 4)",
+    sents: [
+      "Before becoming famous at a young age, he studied art and music in high school.",
+      "During this time, he started performing on stage.",
+      "During his performances on stage, he liked wearing colorful clothes and painting his face.",
+      "This unusual way of dressing and his songs attracted people’s attention.",
+      "They then started following him on social media, and he is now very famous."
+    ],
+    chain: "Study Art & Music → Perform on Stage → Colorful Style → Attract Attention → Become Famous",
+    vi: "Học nghệ thuật & âm nhạc → Biểu diễn sân khấu → Phong cách nhiều màu sắc → Thu hút chú ý → Trở nên nổi tiếng"
+  },
+  {
+    id: 4, p: 5,
+    title: "Topic 4: The Famous Singer (Version 2) – Ca sĩ nổi tiếng (Phiên bản 2)",
+    sents: [
+      "He is a famous singer.",
+      "Before becoming famous, he studied music at school when he was 15.",
+      "His unique way of dressing and performing made him stand out from others.",
+      "This helped him receive many invitations for collaborations and performances.",
+      "He eventually became famous among audiences around the world."
+    ],
+    chain: "Famous Singer → Study Music → Unique Style → More Invitations → World Famous",
+    vi: "Ca sĩ nổi tiếng → Học âm nhạc → Phong cách độc đáo → Nhiều lời mời hơn → Nổi tiếng toàn cầu"
+  },
+  {
+    id: 5, p: 5,
+    title: "Topic 5: Movies then and now – Phim ảnh xưa và nay",
+    sents: [
+      "Movies today are very different from movies in the past.",
+      "In the old days, films were only in black and white, and sometimes even without sound.",
+      "In addition to these technological limits, producers had very low budgets.",
+      "Because of the lack of money, actors also earn little money from acting.",
+      "Nowadays, everything has changed: actors and producers can earn a lot of money from producing films."
+    ],
+    chain: "Different Movies → Black & White → Low Budget → Actors Earned Little → Everything Changed",
+    vi: "Phim khác biệt → Đen trắng → Kinh phí thấp → Diễn viên kiếm ít tiền → Mọi thứ thay đổi"
+  },
+  {
+    id: 6, p: 5,
+    title: "Topic 6: New Coffee Shop (Version 1) – Quán cà phê mới (Phiên bản 1)",
+    sents: [
+      "I arrived at the shop early in the morning, but it was crowded with people.",
+      "A waiter assisted me in finding a table and handed me the menu.",
+      "The menu was not as good as expected and quite pricey, so I decided to order a sandwich.",
+      "The sandwich was both delicious and beautifully presented.",
+      "I might return to try different types of drinks next time."
+    ],
+    chain: "Arrive at Shop → Get Menu → Order Sandwich → Enjoy Food → Return Next Time",
+    vi: "Đến quán → Nhận thực đơn → Gọi sandwich → Thưởng thức món ăn → Quay lại lần sau"
+  },
+  {
+    id: 7, p: 5,
+    title: "Topic 7: The Famous Singer (Version 1) – Ca sĩ nổi tiếng (Phiên bản 1)",
+    sents: [
+      "He is a famous singer who is loved by many fans.",
+      "At the age of fifteen, he studied music at a special school.",
+      "Before becoming famous, he had to practice very hard every day.",
+      "With his unique style and clothes, he soon attracted attention.",
+      "Thanks to his talent and personality, he became well-known to a large audience."
+    ],
+    chain: "Famous Singer → Music School → Hard Practice → Unique Style → Well-known",
+    vi: "Ca sĩ nổi tiếng → Trường âm nhạc → Luyện tập chăm chỉ → Phong cách độc đáo → Trở nên nổi tiếng"
+  },
+  {
+    id: 8, p: 5,
+    title: "Topic 8: The Famous Singer (Version 3) – Ca sĩ nổi tiếng (Phiên bản 3)",
+    sents: [
+      "He is a famous singer who is loved by many people.",
+      "Before becoming famous, he studied music at school when he was 15 years old.",
+      "He spent years practicing and improving his performance skills.",
+      "His unique clothing style and stage presence made him stand out.",
+      "Because of this, more and more people began to recognize and admire him."
+    ],
+    chain: "Famous Singer → Study Music → Practice Skills → Unique Style → Admired by People",
+    vi: "Ca sĩ nổi tiếng → Học âm nhạc → Luyện kỹ năng → Phong cách độc đáo → Được nhiều người ngưỡng mộ"
+  },
+  {
+    id: 9, p: 5,
+    title: "Topic 9: My Visit to a New Coffee Shop (Version 1) – Chuyến ghé thăm quán cà phê mới (Phiên bản 1)",
+    sents: [
+      "It was my first time visiting a new local coffee shop.",
+      "At first, I didn’t think it would be good, but I decided to give it a try.",
+      "I looked at the menu and saw many different kinds of food and drinks.",
+      "I chose one dish to try for myself.",
+      "When I tasted it, I found it really delicious and knew I would come back again."
+    ],
+    chain: "New Coffee Shop → Not Sure → Look at Menu → Choose a Dish → Delicious",
+    vi: "Quán cà phê mới → Chưa chắc → Xem thực đơn → Chọn món → Ngon"
+  },
+  {
+    id: 10, p: 5,
+    title: "Topic 10: My Visit to a New Coffee Shop (Version 2) – Chuyến ghé thăm quán cà phê mới (Phiên bản 2)",
+    sents: [
+      "When I was there it was very crowded and the staff were very busy on the first day",
+      "Although it was busy the staff still arranged a table for me",
+      "They gave me the menu and when I looked at it I felt disappointed because I saw quite a few dishes",
+      "I looked at all of those and chose the most expensive sandwich.",
+      "It tasted quite good with cheese toppings and I will definitely go back to this place"
+    ],
+    chain: "Crowded → Get Table → Menu & Few Dishes → Expensive Sandwich → Cheese & Return",
+    vi: "Quán đông → Có bàn → Thực đơn & ít món → Sandwich đắt nhất → Phô mai & quay lại"
+  },
+  {
+    id: 11, p: 4,
+    title: "Topic 11: Weekend activities – Hoạt động cuối tuần",
+    sents: [
+      "It was held on Saturday morning, there was a 10 km race for adults.",
+      "There were 60 participants, in which Ms. Kamus kept the fastest speed and won.",
+      "After she received the prize, the following time was for children's activities.",
+      "Activities including football, swimming, skipping rope, and the children played together very happily.",
+      "After playing, the children were very hungry and ate with their parents."
+    ],
+    chain: "Sports Day → Winner → Children's Activities → Games → Meal Time",
+    vi: "Ngày hội thể thao → Người chiến thắng → Hoạt động trẻ em → Trò chơi → Ăn uống"
+  },
+  {
+    id: 12, p: 4,
+    title: "Topic 12: The first american woman in space – Người phụ nữ Mỹ đầu tiên trong không gian",
+    sents: [
+      "Encouraged by her parents, she decided to study science at university.",
+      "Her strong academic record earned her a place in a training program in the United States.",
+      "Her passion for space led Mae to join a dedicated research team.",
+      "As a member of the team, she traveled into space and carried out numerous experiments.",
+      "Some of these experiments involved growing plants and observing animals aboard the spacecraft."
+    ],
+    chain: "Parents' Support → Training Program → Research Team → Travel to Space → Space Experiments",
+    vi: "Bố mẹ động viên → Chương trình đào tạo → Nhóm nghiên cứu → Bay vào không gian → Thí nghiệm không gian"
+  },
+  {
+    id: 13, p: 4,
+    title: "Topic 13: End of term project – Dự án cuối kỳ",
+    sents: [
+      "Your end-of-term project should focus on at least two of the given topics.",
+      "It must include relevant pictures along with your own written text about the subject.",
+      "You will then use these pictures and your written work to create a class presentation.",
+      "During the presentation, you should summarize your main points, and it should last about five minutes.",
+      "Afterward, your classmates will have the opportunity to ask questions, and you will respond to them."
+    ],
+    chain: "Choose Topics → Add Pictures → Create Presentation → Present Main Points → Answer Questions",
+    vi: "Chọn chủ đề → Thêm hình ảnh → Tạo bài thuyết trình → Trình bày ý chính → Trả lời câu hỏi"
+  },
+  {
+    id: 14, p: 4,
+    title: "Topic 14: Family sports day – Ngày hội thể thao gia đình",
+    sents: [
+      "It took place on Sunday morning in the park, there was a race for adults.",
+      "Sixty people took part, and among them, Ms Kamus kept the fastest pace and won the race.",
+      "After she got her prize, the next part was for children's activities.",
+      "The activities were football, swimming, skipping, and more, and the kids had fun playing together.",
+      "After the games, the kids were really hungry and ate with their parents."
+    ],
+    chain: "Sports Event → Race → Prize → Children's Games → Eat with Parents",
+    vi: "Sự kiện thể thao → Cuộc đua → Giải thưởng → Trò chơi trẻ em → Ăn cùng bố mẹ"
+  },
+  {
+    id: 15, p: 4,
+    title: "Topic 15: The History of Transportation (Version 1) – Lịch sử giao thông (Phiên bản 1)",
+    sents: [
+      "In the past, transportation was primarily accessible to the wealthy.",
+      "Later, air travel became popular among business professionals.",
+      "Eventually, buses and trains were introduced as affordable alternatives.",
+      "These made traveling more accessible to everyone.",
+      "Today, buses and trains are among the most common transportation options."
+    ],
+    chain: "Wealthy People → Air Travel → Buses & Trains → Accessible to Everyone → Common Transportation",
+    vi: "Người giàu → Đi máy bay → Xe buýt & tàu hỏa → Mọi người dễ tiếp cận → Giao thông phổ biến"
+  },
+  {
+    id: 16, p: 4,
+    title: "Topic 16: Music Festival (Version 2) – Lễ hội âm nhạc (Phiên bản 2)",
+    sents: [
+      "The event was fully planned, financed, and supported by local authorities.",
+      "As a result, entry was free, and around five thousand people attended.",
+      "Many attendees arrived early and browsed local shops before the event began.",
+      "Despite the busy day, workers finished ahead of schedule and watched the famous singer perform.",
+      "The two-hour performance thrilled the audience, leaving everyone in high spirits."
+    ],
+    chain: "Planned Event → Free Entry → People Arrive Early → Singer Performance → Happy Audience",
+    vi: "Sự kiện được lên kế hoạch → Vào cửa miễn phí → Mọi người đến sớm → Ca sĩ biểu diễn → Khán giả vui vẻ"
+  },
+  {
+    id: 17, p: 4,
+    title: "Topic 17: The History of Transportation (Version 2) – Lịch sử giao thông (Phiên bản 2)",
+    sents: [
+      "In the past, traveling was something only wealthy people could afford.",
+      "The development of trains and cars made travel more convenient and affordable for the general public.",
+      "Later on, airplanes also helped make traveling easier and more accessible.",
+      "Because flying is very fast, it supports travel for both holidays and business purposes.",
+      "Today, improvements in transportation make it easier to travel to many parts of the world."
+    ],
+    chain: "Rich People Only → Trains & Cars → Airplanes → Fast Flying → Easy Travel Today",
+    vi: "Chỉ người giàu → Tàu hỏa & ô tô → Máy bay → Bay nhanh → Ngày nay đi lại dễ dàng"
+  },
+  {
+    id: 18, p: 3,
+    title: "Topic 18: Writing About a Place (Version 1) – Viết về một địa điểm (Phiên bản 1)",
+    sents: [
+      "Before writing about a place, you need to do some research on it.",
+      "It is important to learn about the people and the history there carefully.",
+      "Even if you can not visit the place, your writing will still look similar to real experiences.",
+      "You should also compare that place with your own country.",
+      "Such comparisons will make your writing more interesting and meaningful."
+    ],
+    chain: "Research → People & History → Real Experience → Compare Countries → Interesting Writing",
+    vi: "Nghiên cứu → Con người & lịch sử → Trải nghiệm thực tế → So sánh quốc gia → Bài viết thú vị"
+  },
+  {
+    id: 19, p: 3,
+    title: "Topic 19: A group presentation – Bài thuyết trình nhóm",
+    sents: [
+      "First, we prepared the materials for our group presentation.",
+      "Then, we presented our topic for 10 minutes.",
+      "Throughout the presentation, we used images to explain our ideas.",
+      "After the presentation, other students asked questions.",
+      "Finally, each group member took turns answering the questions."
+    ],
+    chain: "Prepare Materials → Present Topic → Use Images → Questions → Answer Questions",
+    vi: "Chuẩn bị tài liệu → Trình bày chủ đề → Dùng hình ảnh → Câu hỏi → Trả lời câu hỏi"
+  },
+  {
+    id: 20, p: 3,
+    title: "Topic 20: College Welcoming Day – Ngày chào đón sinh viên",
+    sents: [
+      "Today will begin at 10 a.m. with a short presentation.",
+      "At the end of the presentation, you will meet the heads of departments and lecturers.",
+      "These staff members will take you on a tour of the school’s buildings and sports facilities in small groups.",
+      "During this tour, you will need to stay with these students until lunchtime.",
+      "This meal will be provided on the second floor of the engineering building."
+    ],
+    chain: "Presentation → Meet Lecturers → School Tour → Stay with Group → Lunch",
+    vi: "Buổi giới thiệu → Gặp giảng viên → Tham quan trường → Đi cùng nhóm → Ăn trưa"
+  },
+  {
+    id: 21, p: 3,
+    title: "Topic 21: Cultural festival – Lễ hội văn hóa",
+    sents: [
+      "The cultural fair was held on Sunday, celebrating and showcasing local traditions.",
+      "About 60 participants took part, with Ms. A leading a traditional dance group.",
+      "The event featured pottery workshops, folk music performances, and food tastings.",
+      "Families enjoyed taking photos and sharing delicious local dishes together.",
+      "At the end of the event, prizes were given to participants with the best costumes."
+    ],
+    chain: "Cultural Fair → Participants → Activities → Families Enjoy → Prizes",
+    vi: "Hội chợ văn hóa → Người tham gia → Hoạt động → Gia đình cùng vui → Trao giải"
+  },
+  {
+    id: 22, p: 3,
+    title: "Topic 22: Writing About a Place (Version 2) – Viết về một địa điểm (Phiên bản 2)",
+    sents: [
+      "Before writing, it is important to research the place thoroughly.",
+      "To prepare well, you should learn about the people and the history of the area.",
+      "Sometimes you may not be able to visit the place, but you can still find similar information from other sources.",
+      "Comparing that place with your own country can be very helpful.",
+      "This comparison will help you gain a deeper understanding and write more effectively."
+    ],
+    chain: "Research → People & History → Other Sources → Compare Countries → Better Writing",
+    vi: "Nghiên cứu → Con người & lịch sử → Nguồn khác → So sánh quốc gia → Viết tốt hơn"
+  },
+  {
+    id: 23, p: 2,
+    title: "Topic 23: Mae – The Math Girl – Mae – Cô gái Toán học",
+    sents: [
+      "Mae’s father worked as a nurse, and her mother was a teacher.",
+      "Her parents motivated Mae to pursue higher education and focus on scientific studies.",
+      "Mae worked diligently and achieved several remarkable milestones.",
+      "She later joined a team, contributing her skills and knowledge.",
+      "Eventually, she had the opportunity to undergo a training program in the United States."
+    ],
+    chain: "Family Background → Study Motivation → Hard Work → Join a Team → Training in the U.S",
+    vi: "Hoàn cảnh gia đình → Động lực học tập → Chăm chỉ → Tham gia nhóm → Đào tạo tại Mỹ"
+  },
+  {
+    id: 24, p: 2,
+    title: "Topic 24: Wellness Fair – Hội chợ sức khỏe",
+    sents: [
+      "The wellness fair took place on Saturday afternoon, encouraging people to adopt healthier lifestyles.",
+      "More than 60 participants joined the event, with Dr. A leading an engaging fitness workshop.",
+      "The fair also included activities like cooking demonstrations, mindfulness sessions, and a fun run.",
+      "After the workshops, prizes were awarded to participants who created the most creative health posters.",
+      "Families enjoyed tasting healthy snacks and discovering practical tips for better overall wellness."
+    ],
+    chain: "Wellness Fair → Participants & Workshop → Activities → Prizes → Healthy Snacks",
+    vi: "Hội chợ sức khỏe → Người tham gia & hội thảo → Hoạt động → Giải thưởng → Đồ ăn lành mạnh"
+  },
+  {
+    id: 25, p: 1,
+    title: "Topic 25: Artificial intelligence – Trí tuệ nhân tạo",
+    sents: [
+      "Over the past decade, artificial intelligence has revolutionized various industries.",
+      "The early AI systems were limited to simple pattern recognition tasks.",
+      "High computational costs previously hindered the development of AI.",
+      "Nowadays, AI engineers build advanced models for complex tasks such as language translation.",
+      "Modern AI tools help businesses to analyze data and make better decisions."
+    ],
+    chain: "AI Revolution → Simple Systems → High Costs → Advanced Models → Better Decisions",
+    vi: "AI phát triển → Hệ thống đơn giản → Chi phí cao → Mô hình tiên tiến → Quyết định tốt hơn"
+  },
+  {
+    id: 26, p: 1,
+    title: "Topic 26: Company wellness day – Ngày chăm sóc sức khỏe của công ty",
+    sents: [
+      "This month, the wellness day took place on Friday, focusing on work-life balance.",
+      "More than 50 employees participated, with Mr. A leading a workshop on stress relief.",
+      "Activities included team yoga, time management seminars, and a group walk.",
+      "After the workshops, awards were given for the most creative wellness ideas.",
+      "Employees enjoyed healthy snacks and exchanged tips for managing stress."
+    ],
+    chain: "Wellness Day → Employees Join → Activities → Awards → Healthy Snacks",
+    vi: "Ngày sức khỏe → Nhân viên tham gia → Hoạt động → Trao giải → Đồ ăn lành mạnh"
+  },
+  {
+    id: 27, p: 1,
+    title: "Topic 27: Workplace evolution – Sự thay đổi của nơi làm việc",
+    sents: [
+      "In the past, employees followed strict nine-to-five schedules.",
+      "Limited technology once restricted remote work possibilities.",
+      "Modern workplaces are adopting more flexible work models.",
+      "Managers now use software to track project progress remotely.",
+      "Today, companies experiment with shorter workweeks to boost productivity."
+    ],
+    chain: "Traditional Work → Limited Technology → Flexible Models → Remote Management → Shorter Workweeks",
+    vi: "Cách làm việc truyền thống → Công nghệ hạn chế → Mô hình linh hoạt → Quản lý từ xa → Tuần làm việc ngắn hơn"
+  },
+  {
+    id: 28, p: 1,
+    title: "Topic 28: IoT – Internet of Things – IoT – Internet vạn vật",
+    sents: [
+      "The Internet of Things (IoT) links everyday devices to improve their capabilities.",
+      "Early IoT devices faced limitations due to slow internet speeds and compatibility challenges.",
+      "High development costs previously slowed the widespread adoption of IoT technology.",
+      "Nowadays, engineers create smart devices for both residential and industrial applications.",
+      "Modern IoT systems provide real-time data tracking and automation features."
+    ],
+    chain: "Connected Devices → Early Limitations → High Costs → Smart Devices → Real-Time Automation",
+    vi: "Thiết bị kết nối → Hạn chế ban đầu → Chi phí cao → Thiết bị thông minh → Tự động hóa thời gian thực"
+  },
+  {
+    id: 29, p: 1,
+    title: "Topic 29: Eating at restaurant – Ăn tại nhà hàng",
+    sents: [
+      "I decided to try a new café located at the end of the street.",
+      "The place was quite busy, with a lively atmosphere.",
+      "Even so, a staff member quickly noticed me and brought over the menu.",
+      "I was a bit surprised to see that there were only a few items to choose from.",
+      "In the end, I went for the most expensive salad on the menu."
+    ],
+    chain: "New Café → Busy Place → Menu → Few Choices → Order Salad",
+    vi: "Quán cà phê mới → Quán đông → Thực đơn → Ít lựa chọn → Gọi salad"
+  },
+  {
+    id: 30, p: 1,
+    title: "Topic 30: Workplace evolution (phiên bản 2) – Sự thay đổi của nơi làm việc (phiên bản 2)",
+    sents: [
+      "In the past, most workers followed fixed schedules from nine to five.",
+      "Because technology was limited, working from home was almost impossible.",
+      "Modern offices are now moving toward more flexible ways of working.",
+      "Managers now use digital tools to follow project progress remotely.",
+      "Many companies today are trying shorter workweeks to increase efficiency."
+    ],
+    chain: "Fixed Schedule → Limited Technology → Flexible Work → Digital Tools → Shorter Workweek",
+    vi: "Lịch làm việc cố định → Công nghệ hạn chế → Làm việc linh hoạt → Công cụ số → Tuần làm việc ngắn hơn"
+  },
+  {
+    id: 31, p: 1,
+    title: "Topic 31: Social Media – Mạng xã hội",
+    sents: [
+      "In the past, slow internet speeds made streaming or uploading videos difficult.",
+      "Early platforms offered only basic features like text posts and simple images.",
+      "Over time, social media platforms have greatly evolved in both design and functionality.",
+      "Today’s platforms use complex algorithms to personalize and shape each user’s feed.",
+      "Many influencers now earn income primarily through brand sponsorships and online ads."
+    ],
+    chain: "Slow Internet → Basic Features → Social Media Growth → Algorithms → Influencer Income",
+    vi: "Internet chậm → Tính năng cơ bản → Mạng xã hội phát triển → Thuật toán → Thu nhập của người ảnh hưởng"
+  },
+  {
+    id: 32, p: 1,
+    title: "Topic 32: University open day – Ngày hội mở cửa trường đại học",
+    sents: [
+      "Before the open day, please contact us by phone or email so we can record your personal details.",
+      "Using this information, we'll prepare an identification card for you to collect upon arrival.",
+      "You'll need to show this card to enter the introductory talk and morning lectures.",
+      "Every visitor will have the chance to join a Q&A session with current students.",
+      "After the presentations, you'll be able to explore different departments across the campus."
+    ],
+    chain: "Register → Get ID Card → Attend Talks → Q&A Session → Explore Campus",
+    vi: "Đăng ký → Nhận thẻ ID → Tham gia buổi giới thiệu → Hỏi đáp → Tham quan khuôn viên"
+  },
+  {
+    id: 33, p: 1,
+    title: "Topic 33: AI – Artificial Intelligence – AI – Trí tuệ nhân tạo",
+    sents: [
+      "Over the past decade, artificial intelligence has reshaped industries around the world.",
+      "Early AI systems were capable of handling only simple pattern recognition tasks.",
+      "In the past, high computational costs slowed down the progress of AI development.",
+      "Today, AI engineers design sophisticated models for applications such as language translation.",
+      "Modern AI tools enable businesses to analyze vast amounts of data and make smarter decisions."
+    ],
+    chain: "AI Revolution → Simple Tasks → High Costs → Advanced Models → Smart Decisions",
+    vi: "AI phát triển → Nhiệm vụ đơn giản → Chi phí cao → Mô hình tiên tiến → Quyết định thông minh"
+  },
+  {
+    id: 34, p: 1,
+    title: "Topic 34: Healthy Eating – Ăn uống lành mạnh",
+    sents: [
+      "In the past, many meals were high in sugar and unhealthy fats.",
+      "Years ago, limited access to fresh produce made healthy eating more difficult.",
+      "Modern diets now focus on fresh, whole foods instead of processed ones.",
+      "Nutritionists today teach people how to plan balanced and nutritious meals.",
+      "Nowadays, mobile apps help users track calories and discover healthy recipes."
+    ],
+    chain: "Unhealthy Meals → Limited Fresh Food → Healthy Diets → Nutritionists → Health Apps",
+    vi: "Bữa ăn không lành mạnh → Thiếu thực phẩm tươi → Chế độ ăn lành mạnh → Chuyên gia dinh dưỡng → Ứng dụng sức khỏe"
+  },
+  {
+    id: 35, p: 1,
+    title: "Topic 35: Busy coffee shop – Quán cà phê đông khách",
+    sents: [
+      "The café was very crowded when the customer arrived.",
+      "The staff helped them find a table and handed them a menu.",
+      "The customer was surprised because the menu was different from what they had expected.",
+      "They decided to order the most expensive item — a sandwich.",
+      "The customer said the sandwich was delicious and that they would definitely come back again."
+    ],
+    chain: "Crowded Café → Staff & Menu → Surprised → Order Sandwich → Come Back Again",
+    vi: "Quán đông khách → Nhân viên & thực đơn → Bất ngờ → Gọi sandwich → Quay lại lần nữa"
+  },
+  {
+    id: 36, p: 1,
+    title: "Topic 36: Work – Công việc",
+    sents: [
+      "The company offers flexible working hours to better support employees’ schedules.",
+      "Her white desk stands out in the shared open office.",
+      "She uses a planner to organize her tasks throughout the shorter workweek.",
+      "At lunchtime, she enjoys a homemade sandwich prepared with fresh ingredients.",
+      "In the evenings, they unwind by reading books on productivity and well-being."
+    ],
+    chain: "Flexible Hours → White Desk → Planner → Lunch → Evening Reading",
+    vi: "Giờ làm linh hoạt → Bàn làm việc màu trắng → Sổ kế hoạch → Bữa trưa → Đọc sách buổi tối"
+  },
+  {
+    id: 37, p: 1,
+    title: "Topic 37: Public Transportations – Giao thông công cộng",
+    sents: [
+      "In the past, many cities had fewer bus routes because of budget limitations.",
+      "Older buses often didn’t have air conditioning or comfortable seating.",
+      "City buses today are much more efficient than those from ten years ago.",
+      "Drivers and staff now receive better training to provide improved passenger service.",
+      "Modern buses often use electric power, helping to reduce pollution in urban areas."
+    ],
+    chain: "Few Routes → Uncomfortable Buses → More Efficient → Better Service → Electric Buses",
+    vi: "Ít tuyến xe → Xe buýt không thoải mái → Hiệu quả hơn → Dịch vụ tốt hơn → Xe buýt điện"
+  },
+  {
+    id: 38, p: 1,
+    title: "Topic 38: Tourism – Du lịch",
+    sents: [
+      "Modern tourism now provides far more choices than in the past.",
+      "In earlier times, travelers mostly depended on guidebooks and paper maps.",
+      "Back then, limited technology also meant that booking options were quite restricted.",
+      "Today, online platforms allow people to plan thoroughly and book their trips with ease.",
+      "Moreover, local guides now offer personalized tours that give visitors more authentic experiences."
+    ],
+    chain: "Modern Tourism → Paper Maps → Limited Booking → Online Booking → Local Guides",
+    vi: "Du lịch hiện đại → Bản đồ giấy → Đặt chỗ hạn chế → Đặt trực tuyến → Hướng dẫn viên địa phương"
+  },
+  {
+    id: 39, p: 1,
+    title: "Topic 39: Healthy eating – Ăn uống lành mạnh",
+    sents: [
+      "In the past, many meals were high in sugar and unhealthy fats.",
+      "Years ago, limited access to fresh produce made healthy eating much more challenging.",
+      "Modern diets now emphasize fresh, whole foods instead of processed ones.",
+      "Nutritionists today teach people how to create balanced and nutritious meal plans.",
+      "Nowadays, mobile apps help users track calories and discover healthy recipes to support better lifestyles."
+    ],
+    chain: "Unhealthy Meals → Hard to Find Fresh Food → Whole Foods → Nutritionists → Healthy Apps",
+    vi: "Bữa ăn không lành mạnh → Khó tìm thực phẩm tươi → Thực phẩm nguyên chất → Chuyên gia dinh dưỡng → Ứng dụng sức khỏe"
+  },
+  {
+    id: 40, p: 1,
+    title: "Topic 40: Tech fair – Hội chợ công nghệ",
+    sents: [
+      "The tech fair took place on Saturday morning, showcasing a variety of exciting new gadgets.",
+      "More than 60 exhibitors participated, with Mr. A presenting an impressive robot demonstration.",
+      "The event featured engaging activities such as VR gaming, coding workshops, and thrilling drone races.",
+      "After the demonstrations, awards were given to the creators of the most innovative products.",
+      "Visitors enjoyed complimentary coffee and snacks while exploring the interactive exhibits."
+    ],
+    chain: "Tech Fair → Exhibitors → Activities → Awards → Snacks",
+    vi: "Hội chợ công nghệ → Người trưng bày → Hoạt động → Trao giải → Ăn nhẹ"
+  },
+  {
+    id: 41, p: 1,
+    title: "Topic 41: Instructions for New Students – Hướng dẫn dành cho sinh viên mới",
+    sents: [
+      "When you arrive at the university, go to the help desk.",
+      "A member of staff will ask for your name and your address.",
+      "He or she will enter your information into the computer and give you an identification card.",
+      "You can use this card to borrow books from the library and access lesson materials online.",
+      "You will find the online lesson materials through links on your home page."
+    ],
+    chain: "Arrive → Help Desk → Information → ID Card → Use Card → Online Materials",
+    vi: "Đến trường → Quầy hỗ trợ → Cung cấp thông tin → Nhận thẻ ID → Dùng thẻ → Tài liệu trực tuyến"
+  },
+  {
+    id: 42, p: 1,
+    title: "Topic 42: Solve a Problem – Giải quyết một vấn đề",
+    sents: [
+      "The first step is to find out what you know about the problem.",
+      "The next one is to form a hypothesis or an idea based on your information.",
+      "Then, you need to perform experiments to see if these ideas are true or not.",
+      "You can also compare your results with experiments in the past.",
+      "In this way, you can add to your knowledge of the subject for future experiments."
+    ],
+    chain: "Problem → Hypothesis → Experiments → Compare Results → Knowledge",
+    vi: "Vấn đề → Giả thuyết → Thí nghiệm → So sánh kết quả → Kiến thức"
+  },
+  {
+    id: 43, p: 1,
+    title: "Topic 43: A Famous Football Player – Một cầu thủ bóng đá nổi tiếng",
+    sents: [
+      "When he was a child, he played for some local teams near his home in Marseille",
+      "He then moved away from his home to join Cannes Football Club in the southern France",
+      "While he was at that club, people throughout France saw that he was a brilliant player.",
+      "After that, he moved to Italy and Spain, where he finished his playing career",
+      "Since he retired from playing, he has worked as a football club manager."
+    ],
+    chain: "Child → Local Teams → Cannes → Brilliant Player → Italy & Spain → Manager",
+    vi: "Thời thơ ấu → Đội địa phương → Cannes → Cầu thủ xuất sắc → Ý & Tây Ban Nha → Quản lý"
+  },
+  {
+    id: 44, p: 1,
+    title: "Topic 44: Animal-Care Event – Sự kiện chăm sóc động vật",
+    sents: [
+      "When you arrive, go straight to the main office to collect your ticket.",
+      "You will need to show this ticket to a member of staff at the door before you enter.",
+      "Inside the building, you will find a photography exhibition on the ground floor.",
+      "Before you look at the pictures, a guide will tell you about the day’s animal-care event.",
+      "Later, the animal-care activities will include playing with and feeding the animals."
+    ],
+    chain: "Arrive → Collect Ticket → Show Ticket → Exhibition → Animal-Care Event → Feed Animals",
+    vi: "Đến nơi → Nhận vé → Xuất trình vé → Xem triển lãm → Sự kiện chăm sóc động vật → Chơi và cho động vật ăn"
+  },
+  {
+    id: 45, p: 1,
+    title: "Topic 45: Tom Harper – Tom Harper",
+    sents: [
+      "When he was young, he began writing short stories for a magazine",
+      "He soon wrote regularly for the magazine, but he was not satisfied",
+      "He almost left the magazine, but then he decided to create some unusual new characters",
+      "The characters he imagined were one of the most famous in the world",
+      "This popularity made Tom Harper rich and successful."
+    ],
+    chain: "Young Writer → Magazine → Not Satisfied → New Characters → Famous → Rich & Successful",
+    vi: "Nhà văn trẻ → Tạp chí → Không hài lòng → Nhân vật mới → Nổi tiếng → Giàu có & thành công"
+  },
+  {
+    id: 46, p: 1,
+    title: "Topic 46: A Scientist’s Life – Albert Einstein – Cuộc đời một nhà khoa học – Albert Einstein",
+    sents: [
+      "As a child, he moved to a special school because he was so clever",
+      "His best friend in his new class was a girl named Lavine",
+      "She later became his wife and helped him with his earliest scientific discoveries",
+      "These were so advanced that he soon became famous all over the world",
+      "Princeton University in the USA offered him a job because he was so famous."
+    ],
+    chain: "Special School → Lavine → Wife → Discoveries → Famous → Princeton",
+    vi: "Trường đặc biệt → Lavine → Vợ → Khám phá khoa học → Nổi tiếng → Princeton"
+  },
+  {
+    id: 47, p: 1,
+    title: "Topic 47: Delivery Man – Nhân viên giao hàng",
+    sents: [
+      "You should arrive at the main office by 6.30am and collect your keys",
+      "In the office, you can also collect a map of your route",
+      "You must follow the route on the map to deliver packages",
+      "When you have completed all deliveries, return to your office",
+      "You must return your keys to the office manager after you get back"
+    ],
+    chain: "Office → Keys → Map → Deliver Packages → Return Office → Return Keys",
+    vi: "Văn phòng → Chìa khóa → Bản đồ → Giao hàng → Trở về văn phòng → Trả chìa khóa"
+  },
+  {
+    id: 48, p: 1,
+    title: "Topic 48: Enter the Conference Hall – Vào hội trường hội nghị",
+    sents: [
+      "When you collect your pack, go to the lifts on the right.",
+      "Take the lift to the third floor and go to the main desk.",
+      "Show your pass from the conference pack to a member of staff at the desk.",
+      "He or she will tell you your seat number for the talk at the main hall.",
+      "Once you are in the hall, someone will help you find your seat."
+    ],
+    chain: "Collect Pack → Lift → Third Floor → Show Pass → Seat Number → Find Seat",
+    vi: "Nhận bộ tài liệu → Thang máy → Tầng ba → Xuất trình thẻ → Số ghế → Tìm chỗ ngồi"
+  },
+  {
+    id: 49, p: 1,
+    title: "Topic 49: Hand in Assignment – Nộp bài tập trực tuyến",
+    sents: [
+      "In your account, press “open a new window”.",
+      "When you do this, a new window will open.",
+      "Simply drag or drop your files.",
+      "Once you put the files there, press the “send” button.",
+      "After you send your course work, you should check your email."
+    ],
+    chain: "Account → New Window → Drag/Drop Files → Send → Check Email",
+    vi: "Tài khoản → Mở cửa sổ mới → Kéo/thả tệp → Gửi → Kiểm tra email"
+  },
+  {
+    id: 50, p: 1,
+    title: "Topic 50: Paperwork Submission Process – Quy trình nộp hồ sơ giấy",
+    sents: [
+      "First, it is a good idea to check your report and correct mistakes",
+      "When you are sure there are no mistakes left, print out your report",
+      "Next, complete a cover sheet with your name and your student number, and attach it to your printed assignment",
+      "Bring your assignment with the attached cover sheet to the front desk in the main hall",
+      "The staff member will take your report and confirm that everything is complete."
+    ],
+    chain: "Check Report → Print Report → Cover Sheet → Front Desk → Staff Confirmation",
+    vi: "Kiểm tra báo cáo → In báo cáo → Phiếu bìa → Quầy tiếp nhận → Nhân viên xác nhận"
+  },
+  {
+    id: 51, p: 1,
+    title: "Topic 51: Car Park – Bãi đỗ xe",
+    sents: [
+      "When you arrive, please take a ticket from a machine at the entrance.",
+      "This ticket will show the date and the time you arrived.",
+      "Please display the ticket with this information in the window of your car.",
+      "Before you leave, please put the ticket on the machine by the gate.",
+      "The machine will read your information and tell you how much you have to pay."
+    ],
+    chain: "Take Ticket → Date & Time → Display Ticket → Gate Machine → Pay",
+    vi: "Lấy vé → Ngày & giờ → Đặt vé trên xe → Máy ở cổng → Thanh toán"
+  },
+  {
+    id: 52, p: 1,
+    title: "Topic 52: Participate in a Race – Tham gia một cuộc đua",
+    sents: [
+      "On your arrival, please go to the information point at the north gate.",
+      "Runners must register here at least 30 minutes before the race starts at 9am.",
+      "To do this, you just need to give us your photo card.",
+      "A member of staff will give you a numbered armband to wear.",
+      "Please put this on immediately and join other competitors at the warm-up area."
+    ],
+    chain: "Information Point → Register → Photo Card → Armband → Warm-up Area",
+    vi: "Điểm thông tin → Đăng ký → Thẻ ảnh → Vòng tay số → Khu khởi động"
+  },
+  {
+    id: 53, p: 1,
+    title: "Topic 53: Fire Instructions – Hướng dẫn khi có cháy",
+    sents: [
+      "When you hear the alarm, leave your bags and belongings at the desk",
+      "Next, walk calmly to the doors marked Emergency Exit",
+      "Through these doors, there are stairs leading you to the ground floor",
+      "When you reach the bottom of these stairs, leave the building through front entrance",
+      "Outside, gather on the grass and wait for further instructions."
+    ],
+    chain: "Alarm → Emergency Exit → Stairs → Front Entrance → Grass & Wait",
+    vi: "Chuông báo → Cửa thoát hiểm → Cầu thang → Cửa chính → Tập trung trên cỏ & chờ"
+  },
+  {
+    id: 54, p: 1,
+    title: "Topic 54: Report Submission Process – Quy trình chuẩn bị và gửi báo cáo",
+    sents: [
+      "Before you start to write your report, you should look at websites for the information you need",
+      "Remember to save links to websites and include them in your report",
+      "You should also include a list of books that you use for reference",
+      "When you have finished your report, correct all the mistakes",
+      "After you make the corrections, send your report by your email."
+    ],
+    chain: "Websites → Save Links → Reference Books → Correct Mistakes → Email Report",
+    vi: "Tìm website → Lưu đường dẫn → Sách tham khảo → Sửa lỗi → Gửi báo cáo qua email"
+  },
+  {
+    id: 55, p: 1,
+    title: "Topic 55: Using a Printer – Quy trình sử dụng máy in",
+    sents: [
+      "First, you need to find an appropriate place to put your printer",
+      "When your printer is in place, turn it on using the switch",
+      "A light will come on at the front of the printer.",
+      "If the light is green, the printer has started correctly.",
+      "Before printing, you need to put paper into the printer."
+    ],
+    chain: "Place Printer → Switch On → Light On → Green Light → Add Paper",
+    vi: "Đặt máy in → Bật công tắc → Đèn sáng → Đèn xanh → Cho giấy vào"
+  },
+  {
+    id: 56, p: 1,
+    title: "Topic 56: Betty Barr’s Life – Cuộc đời của Betty Barr",
+    sents: [
+      "She was born in Shanghai in 1933 to an American mother and a father from Scotland.",
+      "At that time, Shanghai was a city filled with many people from different countries.",
+      "After she finished school, she went to Wellesley College, a famous university in the USA.",
+      "However, she missed China and applied for a job in Hong Kong, where she taught from 1959 to 1972 and learnt to speak Cantonese, the local language.",
+      "In the 1980s, she finally returned to China and still lives with her Shanghai husband, George Wang."
+    ],
+    chain: "Shanghai 1933 → International City → Wellesley College → Hong Kong & Cantonese → Return to China",
+    vi: "Thượng Hải 1933 → Thành phố quốc tế → Đại học Wellesley → Hồng Kông & tiếng Quảng Đông → Trở về Trung Quốc"
+  },
+  {
+    id: 57, p: 1,
+    title: "Topic 57: Key Card – Thẻ ra vào",
+    sents: [
+      "To enter the building and use the lift, you will need your key card.",
+      "If you lose this, you will need to see the staff member at the front desk.",
+      "He or she will ask for your name and your flat number, and then will write these down.",
+      "You will also need to show your identification card.",
+      "He or she will make a copy of it and give you a new key card."
+    ],
+    chain: "Key Card → Lose Card → Name & Flat Number → ID Card → New Key Card",
+    vi: "Thẻ ra vào → Mất thẻ → Tên & số căn hộ → Thẻ căn cước/ID → Thẻ mới"
+  },
+  {
+    id: 58, p: 1,
+    title: "Topic 58: The Famous Actor Jay Mist – Diễn viên nổi tiếng Jay Mist",
+    sents: [
+      "When Jay was a child, his parents left their home country and took him to live in the United States.",
+      "He started studying at a school in that country, and in his free time, he did strength exercises.",
+      "Jay became very good at this and participated in a bodybuilding competition.",
+      "At one of these events, an acting agent saw him and gave him a starring role.",
+      "It was a major action movie, and he gained fame from that film."
+    ],
+    chain: "Child in USA → School & Strength Exercises → Bodybuilding → Acting Agent → Action Movie & Fame",
+    vi: "Thời thơ ấu ở Mỹ → Đi học & tập sức mạnh → Thể hình → Người tuyển diễn viên → Phim hành động & nổi tiếng"
+  },
+  {
+    id: 59, p: 1,
+    title: "Topic 59: Growing Potatoes – Quy trình trồng khoai tây",
+    sents: [
+      "All you need is some earth, an old potato, and a big pot.",
+      "An old potato will have little roots, will be a little green, and won’t be good for eating.",
+      "This color means it is perfect for growing, you should put some earth in the pot and dig it deep down.",
+      "When you’ve done this, you should water it every day and place it in a sunny spot.",
+      "With this care, you should see a potato plant growing after a couple of weeks."
+    ],
+    chain: "Earth + Old Potato + Pot → Green Potato → Plant Deep → Water Daily → Potato Plant",
+    vi: "Đất + khoai cũ + chậu → Khoai hơi xanh → Trồng sâu → Tưới hằng ngày → Cây khoai mọc"
+  },
+  {
+    id: 60, p: 1,
+    title: "Topic 60: Using Public Cycle – Sử dụng xe đạp công cộng",
+    sents: [
+      "Go to the collection point and use your bank card on the screen.",
+      "Choose “hire the cycle” on the screen and then follow the instructions to receive an unlock code.",
+      "Enter the code on the lock of the bike and wait for the green lights.",
+      "When the green light appears, you can unlock your bike and start your journey.",
+      "When you finish your journey, return the bike to any empty collection point."
+    ],
+    chain: "Collection Point → Bank Card → Unlock Code → Green Light → Journey → Return Bike",
+    vi: "Điểm nhận xe → Thẻ ngân hàng → Mã mở khóa → Đèn xanh → Bắt đầu hành trình → Trả xe"
+  },
+  {
+    id: 61, p: 1,
+    title: "Topic 61: Natural History Centre – Trung tâm Lịch sử Tự nhiên",
+    sents: [
+      "There are many interesting places to visit in the town, and the most important one is the Natural History Centre.",
+      "The entrance of the centre is on the town’s main square.",
+      "When you enter the building from the square, you will see a set of stairs to your left.",
+      "The ticket office is at the top of these stairs, and the staff there are very helpful.",
+      "As well as selling tickets, they can provide maps and useful tour information."
+    ],
+    chain: "Natural History Centre → Main Square → Stairs Left → Ticket Office → Maps & Tour Information",
+    vi: "Trung tâm Lịch sử Tự nhiên → Quảng trường chính → Cầu thang bên trái → Quầy vé → Bản đồ & thông tin tham quan"
+  },
+  {
+    id: 62, p: 1,
+    title: "Topic 62: The History of Transportation – Additional Version – Lịch sử giao thông – Phiên bản bổ sung",
+    sents: [
+      "At that time, only the very wealthy could afford to travel",
+      "Thanks to the invention of cars and trains, it became easier for people to travel",
+      "Not only the above 2 means of transport, people later had the opportunity to travel by aeroplanes",
+      "Because flying is very fast, people can travel by this means to different locations for business or travel",
+      "Thanks to the great development of means of transport, today people can travel to other parts of the world."
+    ],
+    chain: "Wealthy → Cars & Trains → Aeroplanes → Fast Flying → World Travel",
+    vi: "Người giàu → Ô tô & tàu hỏa → Máy bay → Bay nhanh → Đi khắp thế giới"
+  }
+];
+
+// ============================================================================
+// QUẢN LÝ TRẠNG THÁI & SPACED REPETITION (SRS)
+// ============================================================================
+const STORAGE_KEY = 'reading_p23_srs_v1';
+let srsData = {}; 
+// Cấu trúc mỗi item: { streak: 0, wrong: 0, lastSeen: 0 }
+let currentTab = 'quiz-chain';
+let currentTopic = null;
+let autoSpeak = true;
+let timerInterval = null;
+let timeLeft = 0;
+
+// State cho chế độ Sắp xếp câu
+let orderSlots = [];
+let orderPool = [];
+
+function loadSRS() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) srsData = JSON.parse(raw);
+    } catch (e) { srsData = {}; }
+    TOPICS_DATA.forEach(t => {
+        if (!srsData[t.id]) srsData[t.id] = { streak: 0, wrong: 0, lastSeen: 0 };
+    });
+    updateStatsUI();
+}
+
+function saveSRS() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(srsData));
+    } catch (e) {}
+    updateStatsUI();
+}
+
+function updateStatsUI() {
+    let mastered = 0;
+    let weak = 0;
+    TOPICS_DATA.forEach(t => {
+        const s = srsData[t.id];
+        if (s.streak >= 2) mastered++;
+        if (s.wrong > 0 && s.streak < 2) weak++;
+    });
+    document.getElementById('stat-mastered').textContent = `✅ ${mastered}/62`;
+    document.getElementById('stat-weak').textContent = `⚠️ ${weak}`;
+}
+
+function getPriorityInfo(p) {
+    switch(p) {
+        case 5: return { text: '🔥🔥🔥🔥🔥 Cao nhất', cls: 'p-5' };
+        case 4: return { text: '🔥🔥🔥🔥 Rất quan trọng', cls: 'p-4' };
+        case 3: return { text: '🔥🔥🔥 Quan trọng', cls: 'p-3' };
+        case 2: return { text: '🔥🔥 Nên ôn', cls: 'p-2' };
+        default: return { text: '📌 Cơ bản', cls: 'p-1' };
+    }
+}
+
+function getFilteredTopics() {
+    const f = document.getElementById('priority-filter').value;
+    let list = TOPICS_DATA.filter(t => {
+        if (f === 'all') return true;
+        if (f === 'high') return t.p >= 2;
+        if (f === 'weak') return srsData[t.id].wrong > 0 || srsData[t.id].streak === 0;
+        return t.p === parseInt(f);
+    });
+    if (list.length === 0) list = TOPICS_DATA; // Fallback nếu bộ lọc rỗng
+    return list;
+}
+
+// Thuật toán chọn câu hỏi tiếp theo dựa trên Trọng số (Spaced Repetition + Độ ưu tiên)
+function pickNextTopic() {
+    const pool = getFilteredTopics();
+    if (pool.length === 1) return pool[0];
+
+    const weights = pool.map(t => {
+        const s = srsData[t.id];
+        let w = t.p * 12; // Ưu tiên cao có trọng số gốc lớn hơn
+        if (s.wrong > 0) w += s.wrong * 55; // Câu làm sai tăng vọt độ ưu tiên
+        if (s.streak === 0) w += 25; // Câu chưa làm bao giờ
+        if (s.streak >= 2) w = Math.max(4, w * 0.15); // Câu đã thuộc giảm tần suất
+        if (currentTopic && t.id === currentTopic.id) w = 0.1; // Tránh lặp lại ngay lập tức
+        return { topic: t, weight: w };
+    });
+
+    const totalWeight = weights.reduce((acc, item) => acc + item.weight, 0);
+    let rand = Math.random() * totalWeight;
+    for (let item of weights) {
+        if (rand < item.weight) return item.topic;
+        rand -= item.weight;
+    }
+    return weights[0].topic;
+}
+
+function recordResult(topicId, isCorrect) {
+    const s = srsData[topicId];
+    s.lastSeen = Date.now();
+    if (isCorrect) {
+        s.streak += 1;
+        if (s.streak >= 2 && s.wrong > 0) s.wrong = Math.max(0, s.wrong - 1);
+    } else {
+        s.streak = 0;
+        s.wrong += 1;
+    }
+    saveSRS();
+}
+
+// ============================================================================
+// HỆ THỐNG ÂM THANH (WEB SPEECH API)
+// ============================================================================
+function speakText(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    // Làm sạch dấu mũi tên khi đọc
+    const cleanText = text.replace(/→/g, ', ');
+    const u = new SpeechSynthesisUtterance(cleanText);
+    u.lang = 'en-US';
+    u.rate = 0.95;
+    window.speechSynthesis.speak(u);
+}
+
+function speakCurrentTopic() {
+    if (!currentTopic) return;
+    const full = currentTopic.sents.join(' ');
+    speakText(full);
+}
+
+function toggleAutoSpeak() {
+    autoSpeak = !autoSpeak;
+    const btn = document.getElementById('btn-autospeak');
+    btn.textContent = autoSpeak ? '🔊 Tự đọc: BẬT' : '🔇 Tự đọc: TẮT';
+}
+
+// ============================================================================
+// ĐỒNG HỒ ĐẾM NGƯỢC (COUNTDOWN TIMER)
+// ============================================================================
+function startTimer(seconds, displayId, onTimeout) {
+    clearInterval(timerInterval);
+    timeLeft = seconds;
+    const el = document.getElementById(displayId);
+    const updateUI = () => {
+        el.textContent = `⏱ ${timeLeft}s`;
+        if (timeLeft <= 5) el.classList.add('urgent');
+        else el.classList.remove('urgent');
+    };
+    updateUI();
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        updateUI();
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            onTimeout();
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+// ============================================================================
+// MODE 1: QUIZ CHUỖI NHỚ (MULTIPLE CHOICE)
+// ============================================================================
+function shuffleArray(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function createPermutedChain(chainStr) {
+    const parts = chainStr.split(' → ');
+    if (parts.length < 3) return chainStr;
+    for (let attempt = 0; attempt < 10; attempt++) {
+        const copy = [...parts];
+        // Đảo vị trí các bước giữa để tạo đáp án nhiễu rất giống thật
+        const i = 1 + Math.floor(Math.random() * (copy.length - 1));
+        const j = 1 + Math.floor(Math.random() * (copy.length - 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+        const candidate = copy.join(' → ');
+        if (candidate !== chainStr) return candidate;
+    }
+    return parts.reverse().join(' → ');
+}
+
+function nextChainQuestion() {
+    currentTopic = pickNextTopic();
+    const pInfo = getPriorityInfo(currentTopic.p);
+    const s = srsData[currentTopic.id];
+
+    document.getElementById('qc-progress').innerHTML = 
+        `Chủ đề #${currentTopic.id}/62 &nbsp;|&nbsp; Đúng liên tiếp: <b>${s.streak}</b> ${s.wrong > 0 ? `<span style="color:var(--danger)">(Sai: ${s.wrong})</span>` : ''}`;
+    document.getElementById('qc-title').textContent = currentTopic.title;
+    const badge = document.getElementById('qc-badge');
+    badge.textContent = pInfo.text;
+    badge.className = `priority-badge ${pInfo.cls}`;
+
+    document.getElementById('qc-feedback').classList.add('hidden');
+
+    // Tạo 4 đáp án: 1 đúng, 1 đảo vị trí từ khóa cùng bài, 2 chuỗi từ bài khác
+    const correctChain = currentTopic.chain;
+    const distractor1 = createPermutedChain(correctChain);
+    const otherTopics = shuffleArray(TOPICS_DATA.filter(t => t.id !== currentTopic.id && t.chain !== correctChain));
+    const distractor2 = otherTopics[0].chain;
+    const distractor3 = otherTopics[1].chain;
+
+    const options = shuffleArray([
+        { text: correctChain, isCorrect: true },
+        { text: distractor1, isCorrect: false },
+        { text: distractor2, isCorrect: false },
+        { text: distractor3, isCorrect: false }
+    ]);
+
+    const optContainer = document.getElementById('qc-options');
+    optContainer.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+
+    options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="opt-letter">${letters[idx]}.</span> <span>${opt.text}</span>`;
+        btn.onclick = () => handleChainAnswer(btn, opt.isCorrect, options);
+        optContainer.appendChild(btn);
+    });
+
+    if (autoSpeak) {
+        const engTitle = currentTopic.title.split('–')[0].replace(/Topic \d+:/i, '').trim();
+        speakText(engTitle);
+    }
+
+    startTimer(25, 'qc-timer', () => {
+        handleChainAnswer(null, false, options, true);
+    });
+}
+
+function handleChainAnswer(clickedBtn, isCorrect, options, isTimeout = false) {
+    stopTimer();
+    const buttons = document.querySelectorAll('#qc-options .option-btn');
+    buttons.forEach((b, idx) => {
+        b.disabled = true;
+        if (options[idx].isCorrect) b.classList.add('correct');
+    });
+    if (clickedBtn && !isCorrect) clickedBtn.classList.add('wrong');
+
+    recordResult(currentTopic.id, isCorrect);
+
+    const fb = document.getElementById('qc-feedback');
+    const banner = document.getElementById('qc-result-banner');
+    if (isTimeout) {
+        banner.innerHTML = `<span style="color:var(--danger)">⏰ Hết giờ! Hệ thống đã đánh dấu để ưu tiên lặp lại câu này.</span>`;
+    } else if (isCorrect) {
+        banner.innerHTML = `<span style="color:var(--success)">🎉 Chính xác! Bạn đã nắm chắc mạch logic của bài.</span>`;
+    } else {
+        banner.innerHTML = `<span style="color:var(--danger)">❌ Chưa đúng! Hãy nhẩm lại chuỗi nhớ bên dưới (Sẽ lặp lại sau).</span>`;
+    }
+
+    document.getElementById('qc-fb-chain').textContent = `Chuỗi nhớ: ${currentTopic.chain}`;
+    document.getElementById('qc-fb-vi').textContent = `Nghĩa: ${currentTopic.vi}`;
+
+    const sentsBox = document.getElementById('qc-fb-sents');
+    sentsBox.innerHTML = currentTopic.sents.map((st, i) => `
+        <div class="sent-item">
+            <span><b>${i+1}.</b> ${st}</span>
+            <button class="tts-btn" onclick="speakText(${JSON.stringify(st).replace(/"/g, '&quot;')})">🔊</button>
+        </div>
+    `).join('');
+
+    fb.classList.remove('hidden');
+    if (autoSpeak) speakText(currentTopic.chain);
+}
+
+// ============================================================================
+// MODE 2: SẮP XẾP THỨ TỰ 5 CÂU (CHUẨN THI APTIS READING PART 2)
+// ============================================================================
+function nextOrderQuestion() {
+    currentTopic = pickNextTopic();
+    const pInfo = getPriorityInfo(currentTopic.p);
+    const s = srsData[currentTopic.id];
+
+    document.getElementById('qo-progress').innerHTML = 
+        `Chủ đề #${currentTopic.id}/62 &nbsp;|&nbsp; Chuỗi đúng: <b>${s.streak}</b>`;
+    document.getElementById('qo-title').textContent = currentTopic.title;
+    const badge = document.getElementById('qo-badge');
+    badge.textContent = pInfo.text;
+    badge.className = `priority-badge ${pInfo.cls}`;
+
+    document.getElementById('qo-hint-box').classList.add('hidden');
+    document.getElementById('qo-hint-en').textContent = `Chuỗi nhớ: ${currentTopic.chain}`;
+    document.getElementById('qo-hint-vi').textContent = `Nghĩa: ${currentTopic.vi}`;
+    document.getElementById('qo-feedback').classList.add('hidden');
+
+    resetCurrentOrder(true);
+
+    startTimer(45, 'qo-timer', () => {
+        evaluateOrder(true);
+    });
+}
+
+function resetCurrentOrder(reshuffle = false) {
+    orderSlots = [null, null, null, null, null];
+    if (reshuffle || orderPool.length === 0) {
+        const indexed = currentTopic.sents.map((text, idx) => ({ origIdx: idx, text }));
+        orderPool = shuffleArray(indexed);
+        // Đảm bảo không vô tình xáo trúng luôn thứ tự đúng
+        if (orderPool.every((item, i) => item.origIdx === i)) {
+            [orderPool[0], orderPool[1]] = [orderPool[1], orderPool[0]];
+        }
+    } else {
+        const indexed = currentTopic.sents.map((text, idx) => ({ origIdx: idx, text }));
+        orderPool = shuffleArray(indexed);
+    }
+    renderOrderBoard();
+}
+
+function renderOrderBoard() {
+    const slotsEl = document.getElementById('qo-slots');
+    slotsEl.innerHTML = '';
+
+    orderSlots.forEach((slotItem, sIdx) => {
+        const div = document.createElement('div');
+        div.className = `order-slot ${slotItem ? 'filled' : ''}`;
+        div.innerHTML = `
+            <span class="slot-num">${sIdx + 1}</span>
+            <span style="flex:1">${slotItem ? slotItem.text : '<span style="color:#94a3b8">Chạm vào câu bên dưới để điền vào vị trí số ' + (sIdx+1) + '...</span>'}</span>
+        `;
+        if (slotItem) {
+            div.onclick = () => removeSlotItem(sIdx);
+        }
+        slotsEl.appendChild(div);
+    });
+
+    const poolEl = document.getElementById('qo-pool');
+    poolEl.innerHTML = '';
+    orderPool.forEach((pItem, pIdx) => {
+        if (orderSlots.some(s => s && s.origIdx === pItem.origIdx)) return; // Đã chọn lên trên
+        const div = document.createElement('div');
+        div.className = 'pool-item';
+        div.innerHTML = `
+            <span style="flex:1">${pItem.text}</span>
+            <button class="tts-btn" onclick="event.stopPropagation(); speakText(${JSON.stringify(pItem.text).replace(/"/g, '&quot;')})">🔊</button>
+        `;
+        div.onclick = () => selectPoolItem(pItem);
+        poolEl.appendChild(div);
+    });
+}
+
+function selectPoolItem(pItem) {
+    const emptyIdx = orderSlots.findIndex(s => s === null);
+    if (emptyIdx === -1) return;
+    orderSlots[emptyIdx] = pItem;
+    if (autoSpeak) speakText(pItem.text);
+    renderOrderBoard();
+
+    // Nếu đã điền đủ 5 câu -> Chấm điểm ngay lập tức
+    if (orderSlots.every(s => s !== null)) {
+        evaluateOrder(false);
+    }
+}
+
+function removeSlotItem(sIdx) {
+    if (!document.getElementById('qo-feedback').classList.contains('hidden')) return;
+    orderSlots[sIdx] = null;
+    renderOrderBoard();
+}
+
+function evaluateOrder(isTimeout = false) {
+    stopTimer();
+    const isAllCorrect = !isTimeout && orderSlots.every((s, idx) => s && s.origIdx === idx);
+    recordResult(currentTopic.id, isAllCorrect);
+
+    const slotDivs = document.querySelectorAll('#qo-slots .order-slot');
+    slotDivs.forEach((div, idx) => {
+        const s = orderSlots[idx];
+        if (s && s.origIdx === idx) div.classList.add('correct');
+        else div.classList.add('wrong');
+    });
+
+    const fb = document.getElementById('qo-feedback');
+    const banner = document.getElementById('qo-result-banner');
+    if (isTimeout) {
+        banner.innerHTML = `<span style="color:var(--danger)">⏰ Hết thời gian! Xem lại đáp án chuẩn bên dưới nhé.</span>`;
+    } else if (isAllCorrect) {
+        banner.innerHTML = `<span style="color:var(--success)">🎉 Tuyệt vời! Thứ tự cả 5 câu hoàn toàn chính xác.</span>`;
+    } else {
+        banner.innerHTML = `<span style="color:var(--danger)">❌ Có câu đặt sai vị trí! Hệ thống sẽ ưu tiên lặp lại bài này.</span>`;
+    }
+
+    document.getElementById('qo-fb-chain').textContent = `Chuỗi nhớ: ${currentTopic.chain}`;
+    document.getElementById('qo-fb-vi').textContent = `Nghĩa: ${currentTopic.vi}`;
+
+    const sentsBox = document.getElementById('qo-fb-sents');
+    sentsBox.innerHTML = currentTopic.sents.map((st, i) => `
+        <div class="sent-item">
+            <span><b>${i+1}.</b> ${st}</span>
+            <button class="tts-btn" onclick="speakText(${JSON.stringify(st).replace(/"/g, '&quot;')})">🔊</button>
+        </div>
+    `).join('');
+
+    fb.classList.remove('hidden');
+}
+
+function toggleOrderHint() {
+    document.getElementById('qo-hint-box').classList.toggle('hidden');
+}
+
+// ============================================================================
+// MODE 3: BẢNG HỌC NHANH 62 TOPICS
+// ============================================================================
+function renderStudyList() {
+    const query = (document.getElementById('study-search').value || '').toLowerCase().trim();
+    const pool = getFilteredTopics().filter(t => {
+        if (!query) return true;
+        return t.title.toLowerCase().includes(query) ||
+               t.chain.toLowerCase().includes(query) ||
+               t.vi.toLowerCase().includes(query) ||
+               t.sents.some(s => s.toLowerCase().includes(query));
+    });
+
+    const container = document.getElementById('study-list');
+    if (pool.length === 0) {
+        container.innerHTML = `<div class="card">Không tìm thấy Topic nào khớp với từ khóa.</div>`;
+        return;
+    }
+
+    container.innerHTML = pool.map(t => {
+        const pInfo = getPriorityInfo(t.p);
+        const s = srsData[t.id];
+        let statusBadge = `<span class="srs-status" style="background:#f1f5f9;color:#64748b">Chưa học</span>`;
+        if (s.streak >= 2) statusBadge = `<span class="srs-status" style="background:var(--success-light);color:var(--success)">Đã thuộc (${s.streak})</span>`;
+        else if (s.wrong > 0) statusBadge = `<span class="srs-status" style="background:var(--danger-light);color:var(--danger)">Hay sai (${s.wrong})</span>`;
+        else if (s.streak === 1) statusBadge = `<span class="srs-status" style="background:var(--warning-light);color:var(--warning)">Đang nhớ (1)</span>`;
+
+        return `
+        <div class="card">
+            <div class="topic-header">
+                <div>
+                    <div class="topic-title">${t.title}</div>
+                    <div style="margin-top:4px; display:flex; gap:6px; align-items:center;">
+                        <span class="priority-badge ${pInfo.cls}">${pInfo.text}</span>
+                        ${statusBadge}
+                    </div>
+                </div>
+                <button class="btn btn-sm" onclick="speakText(${JSON.stringify(t.sents.join(' ')).replace(/"/g, '&quot;')})">🔊 Đọc bài</button>
+            </div>
+            <div class="chain-en">Chuỗi nhớ: ${t.chain} <button class="tts-btn" onclick="speakText(${JSON.stringify(t.chain).replace(/"/g, '&quot;')})">🔊</button></div>
+            <div class="chain-vi">Nghĩa: ${t.vi}</div>
+            <div class="full-sentences">
+                ${t.sents.map((st, idx) => `
+                    <div class="sent-item">
+                        <span><b>${idx+1}.</b> ${st}</span>
+                        <button class="tts-btn" onclick="speakText(${JSON.stringify(st).replace(/"/g, '&quot;')})">🔊</button>
+                    </div>
+                `).join('')}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ============================================================================
+// ĐIỀU HƯỚNG TAB & BỘ LỌC
+// ============================================================================
+function switchTab(tab) {
+    stopTimer();
+    currentTab = tab;
+    const btns = document.querySelectorAll('.nav-tabs .tab-btn');
+    btns[0].classList.toggle('active', tab === 'quiz-chain');
+    btns[1].classList.toggle('active', tab === 'quiz-order');
+    btns[2].classList.toggle('active', tab === 'study');
+
+    document.getElementById('view-quiz-chain').classList.toggle('hidden', tab !== 'quiz-chain');
+    document.getElementById('view-quiz-order').classList.toggle('hidden', tab !== 'quiz-order');
+    document.getElementById('view-study').classList.toggle('hidden', tab !== 'study');
+
+    if (tab === 'quiz-chain') nextChainQuestion();
+    else if (tab === 'quiz-order') nextOrderQuestion();
+    else renderStudyList();
+}
+
+function onFilterChange() {
+    if (currentTab === 'quiz-chain') nextChainQuestion();
+    else if (currentTab === 'quiz-order') nextOrderQuestion();
+    else renderStudyList();
+}
+
+function resetProgress() {
+    if (confirm('Bạn có chắc muốn xóa lịch sử học tập (Spaced Repetition) để bắt đầu lại từ đầu?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        loadSRS();
+        onFilterChange();
+    }
+}
+
+// Khởi chạy ứng dụng
+window.addEventListener('DOMContentLoaded', () => {
+    loadSRS();
+    nextChainQuestion();
+});
+</script>
+</body>
+</html>
